@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#0a0a12">
+<meta name="theme-color" content="#07070d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Malandro Radio">
@@ -12,39 +12,60 @@
 <title>Malandro Radio - 24/7 Live</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-:root{--accent:#ff8a00;--accent2:#ff2e6a;}
+:root{--accent:#ff8a00;--accent2:#ff2e6a;--card:rgba(255,255,255,.05);}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
   background:#07070d;color:#fff;min-height:100vh;min-height:100dvh;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-  padding:max(26px,env(safe-area-inset-top)) 22px max(30px,env(safe-area-inset-bottom));}
-#bg{position:fixed;inset:-20%;z-index:-2;background:radial-gradient(ellipse at 50% 22%,#23123a,#07070d 72%);}
-.top{width:100%;max-width:520px;display:flex;align-items:center;justify-content:space-between;}
-.brand{font-weight:900;letter-spacing:2px;font-size:20px;}
+  display:flex;flex-direction:column;align-items:center;
+  padding:max(20px,env(safe-area-inset-top)) 22px max(26px,env(safe-area-inset-bottom));}
+#bg{position:fixed;inset:-25%;z-index:-2;transition:background 1.2s ease;
+  background:radial-gradient(ellipse at 50% 18%,#3a1630,#1a0a22 55%,#07070d 80%);}
+#bg::after{content:'';position:absolute;inset:0;backdrop-filter:blur(60px);}
+.top{width:100%;max-width:520px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.brand{font-weight:900;letter-spacing:2px;font-size:18px;}
 .brand b{color:var(--accent);}
-.live{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:1.5px;
+.live{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:1.5px;
   background:rgba(255,46,106,.16);padding:5px 12px;border-radius:20px;color:#ff6a8a;}
 .live .dot{width:9px;height:9px;border-radius:50%;background:#888;}
-.live.on .dot{background:#ff2e6a;animation:blink 1.2s infinite;}
+.live.on .dot{background:#ff2e6a;animation:blink 1.2s infinite;box-shadow:0 0 10px #ff2e6a;}
 @keyframes blink{50%{opacity:.3;}}
-.art{width:min(74vw,320px);aspect-ratio:1;border-radius:24px;margin:10px 0;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;
-  box-shadow:0 24px 70px rgba(255,90,40,.35),0 0 0 1px rgba(255,255,255,.06);}
-.art span{font-size:140px;font-weight:900;color:#fff;text-shadow:0 6px 30px rgba(0,0,0,.4);}
-.meta{width:100%;max-width:520px;text-align:center;}
-.show{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:800;}
-#title{font-size:25px;font-weight:900;margin-top:7px;line-height:1.15;}
-#sub{font-size:15px;color:#b9b9c6;margin-top:5px;font-weight:600;}
-.controls{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:520px;}
-#play{width:84px;height:84px;border-radius:50%;border:none;cursor:pointer;
+.stage{flex:1;width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.art{width:min(72vw,300px);aspect-ratio:1;border-radius:22px;position:relative;margin-bottom:22px;
+  box-shadow:0 26px 70px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);overflow:hidden;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));}
+.art img{width:100%;height:100%;object-fit:cover;display:none;}
+.art.has-img img{display:block;}
+.art .mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:130px;font-weight:900;color:rgba(255,255,255,.92);text-shadow:0 6px 30px rgba(0,0,0,.4);}
+.art.has-img .mono{display:none;}
+.art.spin{animation:float 5s ease-in-out infinite;}
+@keyframes float{50%{transform:translateY(-8px);}}
+.np{width:100%;text-align:center;}
+.np .tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:800;}
+#title{font-size:24px;font-weight:900;margin-top:8px;line-height:1.18;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#artist{font-size:15px;color:#c3c3d0;margin-top:5px;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar{margin:18px auto 0;width:80%;max-width:300px;height:4px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;}
+.bar i{display:block;height:100%;width:35%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  animation:slide 2s linear infinite;display:none;}
+.bar.on i{display:block;}
+@keyframes slide{0%{margin-left:-35%;}100%{margin-left:100%;}}
+.next{margin-top:14px;font-size:12px;color:#8a8a9a;font-weight:600;opacity:0;transition:opacity .5s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%;margin-left:auto;margin-right:auto;}
+.next.on{opacity:1;}
+.next b{color:#c3c3d0;font-weight:700;}
+.next span{color:var(--accent);letter-spacing:1.5px;font-size:10px;font-weight:800;margin-right:7px;}
+.controls{width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:18px;padding-top:14px;}
+#play{width:80px;height:80px;border-radius:50%;border:none;cursor:pointer;
   background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
-  display:flex;align-items:center;justify-content:center;box-shadow:0 14px 38px rgba(255,90,40,.5);transition:transform .12s;}
-#play:active{transform:scale(.92);}
-#play svg{width:40px;height:40px;}
-.vol{display:flex;align-items:center;gap:12px;width:80%;max-width:340px;color:#888;font-size:12px;font-weight:700;}
+  display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px rgba(255,90,40,.5);transition:transform .12s;}
+#play:active{transform:scale(.9);}
+#play svg{width:38px;height:38px;}
+.vol{display:flex;align-items:center;gap:12px;width:78%;max-width:320px;color:#888;font-size:11px;font-weight:700;}
 .vol input{flex:1;-webkit-appearance:none;height:5px;border-radius:4px;background:rgba(255,255,255,.18);}
-.vol input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;}
-.hint{font-size:12px;color:#666;text-align:center;line-height:1.5;}
-#status{font-size:12px;color:#888;min-height:16px;}
+.vol input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.4);}
+#status{font-size:11px;color:#888;min-height:14px;}
+.hint{font-size:11px;color:#5a5a66;text-align:center;line-height:1.5;max-width:300px;}
 </style>
 </head>
 <body>
@@ -55,12 +76,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   <div class="live" id="live"><span class="dot"></span><span id="livetext">TAP PLAY</span></div>
 </div>
 
-<div class="art"><span>M</span></div>
-
-<div class="meta">
-  <div class="show">24/7 LIVE</div>
-  <div id="title">Malandro Entertainment Radio</div>
-  <div id="sub">Corridos - Cumbias - Oldies - hosted live</div>
+<div class="stage">
+  <div class="art spin" id="art">
+    <img id="artimg" alt="">
+    <div class="mono">M</div>
+  </div>
+  <div class="np">
+    <div class="tag" id="tag">24/7 LIVE</div>
+    <div id="title">Malandro Entertainment Radio</div>
+    <div id="artist">Corridos - Cumbias - Oldies</div>
+    <div class="bar" id="bar"><i></i></div>
+    <div class="next" id="next"><span>UP NEXT</span><b id="nexttxt"></b></div>
+  </div>
 </div>
 
 <div class="controls">
@@ -69,59 +96,83 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   </button>
   <div class="vol"><span>VOL</span><input id="vol" type="range" min="0" max="100" value="90"><span id="volv">90</span></div>
   <div id="status"></div>
-  <div class="hint">Add to your home screen, then it plays in the background - lock your screen, it keeps going. Donde vive el barrio.</div>
+  <div class="hint">Add to home screen - plays in the background, lock the screen and it keeps going.</div>
 </div>
 
 <audio id="audio" preload="none"></audio>
 
 <script>
-// The relay stream URL is read from stream.json (NOT hardcoded) so a rotated tunnel never breaks
-// the app -- only stream.json changes. A real <audio> element keeps playing with the screen locked /
-// app backgrounded -> true background radio, unlike a YouTube embed.
+// stream.json = where to tune in (survives relay rotation).
+// nowplaying.json = live "now playing" card (title/artist/art/bg) the Oracle server updates.
 let STREAM = "";
 async function loadStreamUrl(){
-  try { STREAM = (await (await fetch('stream.json?t=' + Date.now())).json()).url || ""; } catch(e){ STREAM = ""; }
+  try { STREAM = (await (await fetch('stream.json?t='+Date.now())).json()).url || ""; } catch(e){}
   return STREAM;
 }
 loadStreamUrl();
-const audio = document.getElementById('audio');
-const ico = document.getElementById('ico'), live = document.getElementById('live'), livetext = document.getElementById('livetext');
-const PLAY='M8 5v14l11-7z', PAUSE='M6 5h4v14H6zM14 5h4v14h-4z';
-const statusEl = document.getElementById('status');
-let playing = false;
 
-function setIcon(p){ ico.setAttribute('d', p ? PAUSE : PLAY); }
-function setLive(on, txt){ live.classList.toggle('on', on); livetext.textContent = txt; }
+const audio=document.getElementById('audio'), ico=document.getElementById('ico');
+const live=document.getElementById('live'), livetext=document.getElementById('livetext');
+const titleEl=document.getElementById('title'), artistEl=document.getElementById('artist'), tagEl=document.getElementById('tag');
+const artEl=document.getElementById('art'), artImg=document.getElementById('artimg'), bgEl=document.getElementById('bg');
+const bar=document.getElementById('bar'), statusEl=document.getElementById('status');
+const nextEl=document.getElementById('next'), nextTxt=document.getElementById('nexttxt');
+const PLAY='M8 5v14l11-7z', PAUSE='M6 5h4v14H6zM14 5h4v14h-4z';
+let playing=false, lastNP="";
+
+function setIcon(p){ ico.setAttribute('d', p?PAUSE:PLAY); }
+function setLive(on,txt){ live.classList.toggle('on',on); livetext.textContent=txt; bar.classList.toggle('on',on); }
+
+// ---- Now Playing (Spotify/iHeart style card) ----
+async function pollNowPlaying(){
+  try{
+    const np = await (await fetch('nowplaying.json?t='+Date.now())).json();
+    const sig = (np.title||'')+'|'+(np.artist||'');
+    if(sig!==lastNP){
+      lastNP=sig;
+      titleEl.textContent = np.title || 'Malandro Entertainment Radio';
+      artistEl.textContent = np.artist || 'Corridos - Cumbias - Oldies';
+      tagEl.textContent = np.show || '24/7 LIVE';
+      const nt = np.next_title || np.next_artist;
+      if(nt){ nextTxt.textContent = [np.next_title,np.next_artist].filter(Boolean).join(' - '); nextEl.classList.add('on'); }
+      else { nextEl.classList.remove('on'); }
+      if(np.art){ artImg.src=np.art; artEl.classList.add('has-img'); } else { artEl.classList.remove('has-img'); }
+      if(np.bg){ bgEl.style.background='radial-gradient(ellipse at 50% 18%,'+np.bg+' 0%,#1a0a22 55%,#07070d 80%)'; }
+      if('mediaSession' in navigator){
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: np.title||'Malandro Radio', artist: np.artist||'24/7 Live - Barrio Radio',
+          album:'Malandro Entertainment', artwork:[{src: np.art||'icon-512.png', sizes:'512x512', type:'image/png'}]});
+      }
+    }
+  }catch(e){}
+}
+pollNowPlaying();
+setInterval(pollNowPlaying, 12000);
 
 async function start(){
   if(!STREAM){ await loadStreamUrl(); }
   if(!STREAM){ setLive(false,'OFFLINE'); statusEl.textContent='Stream unavailable'; return; }
-  audio.src = STREAM + (STREAM.includes('?')?'&':'?') + "t=" + Date.now();   // cache-bust -> join LIVE
+  audio.src = STREAM + (STREAM.includes('?')?'&':'?') + "t=" + Date.now();
   audio.load();
-  audio.play().then(()=>{ playing=true; setIcon(true); setLive(true,'LIVE'); statusEl.textContent=''; })
+  audio.play().then(()=>{ playing=true; setIcon(true); setLive(true,'LIVE'); statusEl.textContent=''; pollNowPlaying(); })
               .catch(e=>{ statusEl.textContent='Tap play again to start'; });
 }
 function stop(){ audio.pause(); audio.src=''; playing=false; setIcon(false); setLive(false,'PAUSED'); }
 
-document.getElementById('play').onclick = ()=> playing ? stop() : start();
-audio.onplaying = ()=>{ playing=true; setIcon(true); setLive(true,'LIVE'); statusEl.textContent=''; };
-audio.onpause   = ()=>{ setIcon(false); };
-audio.onwaiting = ()=>{ statusEl.textContent='buffering...'; };
-audio.onerror   = ()=>{ setLive(false,'OFFLINE'); statusEl.textContent='Stream offline - go live on MALANDRO'; };
+document.getElementById('play').onclick=()=> playing?stop():start();
+audio.onplaying=()=>{ playing=true; setIcon(true); setLive(true,'LIVE'); statusEl.textContent=''; };
+audio.onpause=()=>{ setIcon(false); };
+audio.onwaiting=()=>{ statusEl.textContent='buffering...'; };
+audio.onerror=()=>{ setLive(false,'OFFLINE'); statusEl.textContent='Stream offline - go live on MALANDRO'; };
 
 const vol=document.getElementById('vol'), volv=document.getElementById('volv');
 audio.volume=0.9;
 vol.oninput=()=>{ audio.volume=vol.value/100; volv.textContent=vol.value; };
 
-// MediaSession -> lock-screen controls + "Malandro Radio" shown on the lock screen
 if('mediaSession' in navigator){
-  navigator.mediaSession.metadata = new MediaMetadata({
-    title:'Malandro Radio', artist:'24/7 Live - Barrio Radio', album:'Malandro Entertainment',
-    artwork:[{src:'icon-512.png',sizes:'512x512',type:'image/png'}]});
   navigator.mediaSession.setActionHandler('play', start);
   navigator.mediaSession.setActionHandler('pause', stop);
 }
-
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 </script>
 </body>
