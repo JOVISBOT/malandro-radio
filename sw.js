@@ -6,7 +6,7 @@ self.addEventListener('install', e => { e.waitUntil(caches.open(SHELL).then(c =>
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k=>k!==SHELL).map(k=>caches.delete(k))))); self.clients.claim(); });
 self.addEventListener('fetch', e => {
   const u = e.request.url;
-  // the live audio stream must ALWAYS hit the network, never cache; only cache our own shell
-  if (u.includes('trycloudflare.com') || u.includes('/malandro')) return;
+  // the live stream AND stream.json (current relay URL) must ALWAYS hit the network, never cache
+  if (u.includes('trycloudflare.com') || u.includes('/malandro') || u.includes('stream.json')) return;
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)).catch(()=>fetch(e.request)));
 });

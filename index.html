@@ -75,9 +75,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 <audio id="audio" preload="none"></audio>
 
 <script>
-// The relay stream (your box pushes audio here; this plays it). A real <audio> element keeps
-// playing when the screen locks / app is backgrounded -> true background radio, unlike a YouTube embed.
-const STREAM = "https://advertisement-residential-doing-min.trycloudflare.com/malandro";
+// The relay stream URL is read from stream.json (NOT hardcoded) so a rotated tunnel never breaks
+// the app -- only stream.json changes. A real <audio> element keeps playing with the screen locked /
+// app backgrounded -> true background radio, unlike a YouTube embed.
+let STREAM = "";
+async function loadStreamUrl(){
+  try { STREAM = (await (await fetch('stream.json?t=' + Date.now())).json()).url || ""; } catch(e){ STREAM = ""; }
+  return STREAM;
+}
+loadStreamUrl();
 const audio = document.getElementById('audio');
 const ico = document.getElementById('ico'), live = document.getElementById('live'), livetext = document.getElementById('livetext');
 const PLAY='M8 5v14l11-7z', PAUSE='M6 5h4v14H6zM14 5h4v14h-4z';
@@ -87,8 +93,10 @@ let playing = false;
 function setIcon(p){ ico.setAttribute('d', p ? PAUSE : PLAY); }
 function setLive(on, txt){ live.classList.toggle('on', on); livetext.textContent = txt; }
 
-function start(){
-  audio.src = STREAM + "?t=" + Date.now();   // cache-bust -> always join at the LIVE point
+async function start(){
+  if(!STREAM){ await loadStreamUrl(); }
+  if(!STREAM){ setLive(false,'OFFLINE'); statusEl.textContent='Stream unavailable'; return; }
+  audio.src = STREAM + (STREAM.includes('?')?'&':'?') + "t=" + Date.now();   // cache-bust -> join LIVE
   audio.load();
   audio.play().then(()=>{ playing=true; setIcon(true); setLive(true,'LIVE'); statusEl.textContent=''; })
               .catch(e=>{ statusEl.textContent='Tap play again to start'; });
